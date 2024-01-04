@@ -27,22 +27,19 @@ app.use((req,res,next)=>{
 app.post("/email",(req,res)=>{
 
 
-    console.log(req.body.userEmail);
-    console.log(req.body.userPassword);
-    console.log(req.body.friendEmail);
-    console.log(req.body.subject);
-    console.log(req.body.body);
+    console.log(req.body);
 
-    var transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user:  req.body.userEmail,
-          pass:  req.body.userPassword
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: "nodenoreplyjs@gmail.com",
+        pass: "kqan jabk mpxr yqnj",
         }
       });
       
       var mailOptions = {
-        from: req.body.userEmail,
         to: req.body.friendEmail,
         subject: req.body.subject,
         text: req.body.body
@@ -50,17 +47,15 @@ app.post("/email",(req,res)=>{
       
       transporter.sendMail(mailOptions, function(error, info){
         if (error) {
+          console.log(error);
+
              res.status(404).json({
-
-
                 message:"Error To Send Mail",
                 error:error
 
              })
         } else {
             res.status(200).json({
-
-
                 message:"Successflly send the email",
 
              })
@@ -85,7 +80,6 @@ app.use (  (error,req,res,next)=>{
   res.json({
       error:{
          message:error.message
-
       }
   }) });
 
